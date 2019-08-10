@@ -1,38 +1,40 @@
 package scrap.heap.refactor;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+  public String getGreeting() {
+    return "Hello world.";
+  }
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-         //Place birthday party orders
-         order("red", "mylar", "4", "chocolate", "chocolate", "circle", "large", "brown" );
-         order("blue", "latex", "7", "Vanilla", "chocelate", "square", "med", "brown" );
-         order("yellow", "mylar", "4", "vanilla", "vanilla", "square", "small", "yellow" );
+    //Place birthday party orders
+    order("red", "mylar", "4", "chocolate", "chocolate", "circle", "large", "brown");
+    order("blue", "latex", "7", "Vanilla", "chocelate", "square", "med", "brown");
+    order("yellow", "mylar", "4", "vanilla", "vanilla", "square", "small", "yellow");
 
-    }
+  }
 
-    private static void order(String balloonColor, String material, String number, String flavor, String frostingFlavor, String shape, String size, String cakeColor){
+  /**
+   * This method acts like an adaptor without breaking client side contract which is main method.
+   */
+  private static void order(String balloonColor, String material, String number, String flavor, String frostingFlavor,
+                            String shape, String size, String cakeColor) {
 
-        orderBalloons(balloonColor, material, number);
+    Order order = new OrderBuilder()
+      .balloon()
+        .color(balloonColor)
+        .material(material)
+        .quantity(number)
+        .build()
+      .cake()
+        .color(cakeColor)
+        .flavor(flavor)
+        .frosting(frostingFlavor)
+        .shape(shape)
+        .size(size)
+        .build()
+      .buildOrder();
 
-        orderCake(frostingFlavor, flavor, shape, size, cakeColor);
-    }
-
-    private static void orderBalloons(String balloonColor, String material, String number){
-
-        //for the purposes of this exercise, pretend this method works and adds balloons to the order
-        System.out.println("Balloons ordered; " + balloonColor + ", " + material  + ", " + number);
-
-    }
-
-    private static void orderCake(String flavor, String frostingFlavor, String shape, String size, String cakeColor){
-
-        //for the purposes of this exercise, pretend that this method adds a cake to the order
-        System.out.println("cake ordered; " + flavor + ", " + frostingFlavor  + ", " + shape + ", " + size + ", " + cakeColor);
-
-    }
-
+    System.out.println(order.display());
+  }
 }
